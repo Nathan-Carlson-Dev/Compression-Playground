@@ -1,20 +1,9 @@
 import math
+import random
 import Compression_Algorithms.DCT_Compressions as dctc
+import Analysis.SetBuilders as dsb
+import Analysis.Tests.AccuracyTest as accuracy
 
 if __name__ == "__main__":
-    arr = [1, 1, 1, 2, 2, 1, 5, 5, 1]
-    
-    freq = {}
-    
-    for x in arr:
-        if x in freq.keys():
-            freq[x] += 1
-        else:
-            freq[x] = 1
-    
-    sum = 0
-    for x in freq.values():
-        sum += x
-
-    print("average frequency: " + str(sum/(max(freq.keys()) - min(freq.keys()) + 1)))
-    print(dctc.DCT2Decompress(dctc.DCT2Compress(arr, 2)))
+    accuracy.AccuracyTest("UniformAccuracy", lambda: int(random.uniform(0, 9)), lambda x: dctc.DCT2Compress(x, 4), dctc.DCT2Decompress, 256, 10, lambda: 0)
+    accuracy.AccuracyTest("NormalAccuracy", lambda: abs(int(random.gauss(9, 3))), lambda x: dctc.DCT2Compress(x, 4), dctc.DCT2Decompress, 256, 10, lambda: 0)
