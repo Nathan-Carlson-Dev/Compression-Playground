@@ -1,9 +1,14 @@
-import math
+import time
 import random
+import math
+import Compression_Algorithms.Aux_Compressions as aux
+import DCT_Algorithms as dct
 import Compression_Algorithms.DCT_Compressions as dctc
-import Analysis.SetBuilders as dsb
-import Analysis.Tests.AccuracyTest as accuracy
 
 if __name__ == "__main__":
-    accuracy.AccuracyTest("UniformAccuracy", lambda: int(random.uniform(0, 9)), lambda x: dctc.DCT2Compress(x, 4), dctc.DCT2Decompress, 256, 10, lambda: 0)
-    accuracy.AccuracyTest("NormalAccuracy", lambda: abs(int(random.gauss(9, 3))), lambda x: dctc.DCT2Compress(x, 4), dctc.DCT2Decompress, 256, 10, lambda: 0)
+    start = time.time()
+    arr = [math.floor(random.uniform(0, 256)) for x in range(0, 128)]
+    data, _ = dctc.DCT2Compress(arr, 256, 128)
+    print(len(data)/len(arr))
+    print(data)
+    print("Seconds: " + str(time.time() - start))

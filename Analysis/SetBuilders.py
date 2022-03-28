@@ -1,19 +1,18 @@
-def BuildDataSet(title, header, width, height, distribution, updater):
+def BuildDataSet(title, updater):
     data = []
-    for y in range(0, height):
-        row = []
-        for x in range(0, width):
-            row.append(distribution())
-            updater()
-        data.append(row)
+    for y in range(0, updater.info["height"]):
+        line = []
+        for x in range(0, updater.info["width"]):
+            line.append(updater.generate())
+        data.append(line)
+        updater.update()
+    updater.reset()
     file = open("Analysis/Datasets/" + title + "DataSet.csv", "w")
-    for x in range(0, width - 1):
-        file.write(header + ",")
-    file.write(header + "\n")
-    for y in range(0, height):
-        for x in range(0, width - 1):
+    for y in range(0, updater.info["height"]):
+        for x in range(0, updater.info["width"] - 1):
             file.write(str(data[y][x]) + ",")
-        file.write(str(data[y][width - 1]) + "\n")
+        file.write(str(data[y][updater.info["width"] - 1]) + "\n")
+        updater.update()
     file.close()
     return (data, "Analysis/Datasets/" + title + "DataSet.csv")
 
@@ -27,6 +26,6 @@ def BuildMetricSet(title, headers, data):
         file.write(str(y + 1) + ", ")
         for x in range(0, len(data[y]) - 1):
             file.write(str(data[y][x]) + ",")
-        file.write(str(data[y][len(data[x]) - 1]) + "\n")
+        file.write(str(data[y][len(data[y]) - 1]) + "\n")
     file.close()
     return "Analysis/Metrics/" + title + "MetricSet.csv"
